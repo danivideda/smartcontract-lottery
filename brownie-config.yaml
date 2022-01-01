@@ -7,3 +7,6 @@ compiler:
     version: 0.8.11
     remappings:
       - "@chainlink=smartcontractkit/chainlink-brownie-contracts@0.3.0"
+
+wallets:
+  private_key: ${PRIVATE_KEY}
