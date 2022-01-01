@@ -22,5 +22,5 @@ contract Lottery {
 
     function startLottery() public {}
 
-    function endLotter() public {}
+    function endLottery() public {}
 }
