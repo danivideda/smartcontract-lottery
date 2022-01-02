@@ -30,6 +30,7 @@ contract Lottery {
         uint256 conversionResult = (usdEntryFee * precision) /
             usdEthConversionRate;
         // 13419205531909524 x 10^-18 = 0.013419205531909524
+        // Something updated
         return uint256(conversionResult);
     }
 
