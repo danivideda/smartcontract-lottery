@@ -11,8 +11,6 @@ from brownie import (
 
 LOCAL_BLOCKCHAIN_ENVIRONMENT = ["development", "ganache-cli"]
 LOCAL_FORKED_ENVIRONMENT = ["mainnet-fork"]
-PRIVATE_KEY = config["wallets"]["from_key"]
-NETWORK_ACTIVE = config["networks"][network.show_active()]
 
 
 def get_account(index=None, id=None):
@@ -25,7 +23,7 @@ def get_account(index=None, id=None):
         or network.show_active() in LOCAL_FORKED_ENVIRONMENT
     ):
         return accounts[0]
-    return accounts.add(PRIVATE_KEY)
+    return accounts.add(config["wallets"]["from_key"])
 
 
 contract_to_mock = {
@@ -52,7 +50,7 @@ def get_contract(contract_name):
             deploy_mocks()
         contract = contract_type[-1]  # MockV3Aggregator[-1]
     else:
-        contract_address = NETWORK_ACTIVE.get(contract_name)
+        contract_address = config["networks"][network.show_active()].get(contract_name)
         # Address
         # ABI (taken from MockV3Aggregator localy build)
         contract = Contract.from_abi(
