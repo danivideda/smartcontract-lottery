@@ -1,6 +1,7 @@
 from brownie import Lottery, accounts, config, network
 from toolz.itertoolz import get
-from scripts.helpful_scripts import get_account, get_contract
+from scripts.helpful_scripts import get_account, get_contract, fund_with_link
+import time
 
 NETWORK_ACTIVE = config["networks"][network.show_active()]
 # ORACLE = NETWORK_ACTIVE["chainlink"]
@@ -38,7 +39,29 @@ def start_lottery():
     print("The lottery has started!")
 
 
+def enter_lottery():
+    account = get_account()
+    lottery = Lottery[-1]
+    value = lottery.getEntranceFee() + (1 * 10 ** 8)  # 0.1 GWEI
+    tx = lottery.enter({"from": account, "value": value})
+    tx.wait(1)
+    print("You've entered the lottery!")
+
+
+def end_lottery():
+    account = get_account()
+    lottery = Lottery[-1]
+    # Fund contract with LINK
+    tx_fund_link = fund_with_link(lottery.address)
+    tx_fund_link.wait(1)
+    tx_ending_lottery = lottery.end({"from": account})
+    tx_ending_lottery.wait(1)
+    time.sleep(60)
+    print(f"{lottery.recentWinner()} is the new winner!")
+
+
 def main():
     print(network.show_active())
     deploy_lottery()
     start_lottery()
+    enter_lottery()
