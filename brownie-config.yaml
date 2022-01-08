@@ -13,3 +13,10 @@ compiler:
 networks:
   mainnet-fork:
     eth_usd_price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+  rinkeby:
+    eth_usd_price_feed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
+    chainlink:
+      link_token: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709"
+      vrf_coordinator: "0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B"
+      key_hash: "0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311"
+      fee: 0.1
