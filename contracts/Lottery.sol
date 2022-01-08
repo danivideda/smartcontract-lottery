@@ -21,7 +21,6 @@ contract Lottery is Ownable, VRFConsumerBase {
     bytes32 public keyHash;
     uint256 public fee;
     uint256 public randomness;
-    bytes32 public requestId;
 
     constructor(
         address _priceFeedAddress,
@@ -36,14 +35,14 @@ contract Lottery is Ownable, VRFConsumerBase {
 
         // VRF Chainlink
         keyHash = _keyHash;
-        fee = _fee * 10**18;
+        fee = _fee;
     }
 
     /**
      * @dev Requests randomness
      * @return requestId unique ID for this request
      */
-    function getRandomNumber() private returns (bytes32) {
+    function getRandomNumber() private returns (bytes32 requestId) {
         require(
             LINK.balanceOf(address(this)) >= fee,
             "Not enough LINK - fill contract with faucet"
@@ -87,7 +86,7 @@ contract Lottery is Ownable, VRFConsumerBase {
 
     function endLottery() external onlyOwner {
         lotteryState = LOTTERY_STATE.CALCULATING_WINNER;
-        requestId = getRandomNumber();
+        bytes32 requestId = getRandomNumber();
     }
 
     function fulfillRandomness(bytes32 _requestId, uint256 _randomness)
@@ -98,7 +97,6 @@ contract Lottery is Ownable, VRFConsumerBase {
             lotteryState == LOTTERY_STATE.CALCULATING_WINNER,
             "You are not there yet"
         );
-        require(requestId == _requestId);
         require(_randomness > 0, "Random value not found");
         uint256 indexOfWinner = _randomness % players.length;
         recentWinner = players[indexOfWinner];
