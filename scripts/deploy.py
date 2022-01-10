@@ -3,20 +3,9 @@ from toolz.itertoolz import get
 from scripts.helpful_scripts import get_account, get_contract, fund_with_link
 import time
 
-# ORACLE = NETWORK_ACTIVE["chainlink"]
-
 
 def deploy_lottery():
     account = get_account()
-    # lottery = Lottery.deploy(
-    #     NETWORK_ACTIVE.get("eth_usd_price_feed"),
-    #     ORACLE.get("vrf_coordinator"),
-    #     ORACLE.get("link_token"),
-    #     ORACLE.get("key_hash"),
-    #     ORACLE.get("fee"),
-    #     {"from": account},
-    # )
-    # print(lottery)
 
     lottery = Lottery.deploy(
         get_contract("eth_usd_price_feed").address,
@@ -56,7 +45,7 @@ def end_lottery():
     tx_fund_link.wait(1)
     tx_ending_lottery = lottery.endLottery({"from": account})
     tx_ending_lottery.wait(1)
-    # time.sleep(60)
+    time.sleep(60)
     print(f"{lottery.recentWinner()} is the new winner!")
 
 

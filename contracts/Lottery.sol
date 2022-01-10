@@ -16,6 +16,7 @@ contract Lottery is Ownable, VRFConsumerBase {
         CALCULATING_WINNER
     }
     LOTTERY_STATE public lotteryState;
+    event RequestedRandomness(bytes32 requestId);
 
     // VRF Chainlink
     bytes32 public keyHash;
@@ -87,6 +88,7 @@ contract Lottery is Ownable, VRFConsumerBase {
     function endLottery() external onlyOwner {
         lotteryState = LOTTERY_STATE.CALCULATING_WINNER;
         bytes32 requestId = getRandomNumber();
+        emit RequestedRandomness(requestId);
     }
 
     function fulfillRandomness(bytes32 _requestId, uint256 _randomness)
